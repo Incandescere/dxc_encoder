@@ -41,18 +41,27 @@ public class Codec {
              char unencodedChar = plainText.charAt(i);
              if(unencodedChar==' '){
                  result+=unencodedChar;
-
              } else {
                  int idx = charToInt.get(unencodedChar);
-                 result += intToChar.get((idx+this.offset)%44);
+                 result += intToChar.get((idx-this.offset)%44);
              }
         }
         return result;
     }
 
     public String decode(String encodedText){
-        return "";
+        char decodeOffsetChar = encodedText.charAt(0);
+        int decodeOffset = charToInt.get(decodeOffsetChar);
+        String result = "";
+        for(int i=1;i<encodedText.length();i++){
+            char encodedChar = encodedText.charAt(i);
+            if(encodedChar==' '){
+                result+=encodedChar;
+            } else {
+                int idx = charToInt.get(encodedChar);
+                result+=intToChar.get((idx+decodeOffset)%44);
+            }
+        }
+        return result;
     }
-
-
 }
